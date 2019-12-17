@@ -177,6 +177,8 @@ while True:
     # обработка некоторых клавиш (выхода и постоянной стрельбы)
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
+        if event.type==pygame.QUIT:
+            os.sys.exit()
         if  keys[pygame.K_e]:
             os.sys.exit(0)
         if keys[pygame.K_c] and event.type == pygame.KEYUP:
