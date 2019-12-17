@@ -23,9 +23,14 @@ class Bullet(pygame. sprite.Sprite):
 
 
 class EnemyAircraft(pygame. sprite.Sprite):
-    def __init__(self, vel=1):
+    def __init__(self, imageInd, vel=1):
         super(EnemyAircraft, self).__init__()
-
-        self.image = pygame.image.load('sprites/enimeAircraft.png')
+        self.imageInd = imageInd
+        if imageInd == 1:
+            self.image = pygame.image.load(
+                'sprites/enimeAircraft1.png')
+        elif imageInd == 2:
+            self.image = pygame.image.load(
+                'sprites/enimeAircraft2.png')
         self.rect = self.image.get_rect()
         self.vel = vel
