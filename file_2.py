@@ -7,8 +7,9 @@ from game_objects import Player, Bullet, EnemyAircraft
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
+game_over=False
 win = pygame.display.set_mode(SIZE)
-pygame.display.set_caption("Hello, World!")
+pygame.display.set_caption("Shooter")
 
 player = Player()
 
@@ -34,15 +35,61 @@ mouseCoords = []
 clock = pygame.time.Clock()
 rightleftGun = 30
 constantShooting = -1
+global player_live
+player_live=3
+
+
+def game_over():
+    """Функция для вывода надписи Game Over и результатов
+    в случае завершения игры и выход из игры"""
+    go_font = pygame.font.SysFont('monaco', 72)
+    red = pygame.Color(255, 0, 0)
+    go_surf = go_font.render('Game over', True, red)
+    go_rect = go_surf.get_rect()
+    go_rect.midtop = (100, 100)
+    play_surface = pygame.display.set_mode((
+        450, 400))
+    pygame.display.set_caption('Shooter')
+    play_surface.blit(go_surf, go_rect.midtop)
+    pygame.display.flip()
+    time.sleep(5)
+    pygame.quit()
+    os.sys.exit()
+
+
 
 # функция получения названия картинки фона по номеру
-
-
 def bgCadr(i):
     i = str(i)
     while len(i) < 4:
         i = '0' + i
-    return('bg/Видеофон Звёздное небо ' + i+'.jpg')
+    return('pygame_bg.jpg')
+
+
+pause=False
+def pausedddd():
+    while pause:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    pygame.quit()
+                    quit()
+        go_font = pygame.font.SysFont('monaco', 72)
+        red = pygame.Color(255, 0, 0)
+        go_surf = go_font.render(' Paused', True, red)
+        go_rect = go_surf.get_rect()
+        go_rect.midtop = (100, 100)
+        play_surface = pygame.display.set_mode((
+            450, 400))
+        pygame.display.set_caption('Shooter')
+        play_surface.blit(go_surf, go_rect.midtop)
+        pygame.display.flip()
+        keys = pygame.key.get_pressed()
+        if event.key == pygame.K_p:
+            pause=False
+
+
+        pygame.display.update()
 
 
 # функция обновления экрана
@@ -63,7 +110,8 @@ def drawWindow():
 
 
 while True:
-    clock.tick(120)
+
+    clock.tick(45)
     intervalPlayerSnaryad += 1
     intervalEnemySnaryad += 1
 
@@ -78,17 +126,18 @@ while True:
         enemyBullets = enemiesBullets[enemies.index(enemy)]
         for enemyBullet in enemyBullets:
             if enemyBullet.rect.centery < HEIGHT and enemyBullet.rect.centery > 0:
-                delta = random.random()
+                delta = round(random.random())
                 enemyBullet.rect.centery += 1 + delta*3
                 enemyBullet.rect.bottom += 1 + delta*3
             else:
                 # удалил снаряд с индексом, который вылетел за границы
                 enemyBullets.pop(enemyBullets.index(enemyBullet))
 
+
     # двигаю снаряды игрока и удаляю улетевшие
     for playerBullet in playerBullets:
         if playerBullet.rect.centery < HEIGHT and playerBullet.rect.centery > 0:
-            delta = random.random()
+            delta = round(random.random())
             playerBullet.rect.centery -= 20 + delta*3
             playerBullet.rect.bottom -= 20 + delta*3
         else:
@@ -118,14 +167,19 @@ while True:
             enemyBulletsGroup, playerBulletsGroup, True, True)
         for hit in hits:
             if hit:
-                time.sleep(2)
-                print('Game over')
-                os.sys.exit(0)
+                player_live -= 1
+                if player_live<0:
+                    time.sleep(0)
+                    print('Game over')
+                    print(player_live)
+                    game_over()
+
+                ##os.sys.exit(0)
 
     # обработка некоторых клавиш (выхода и постоянной стрельбы)
     keys = pygame.key.get_pressed()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if  keys[pygame.K_e]:
             os.sys.exit(0)
         if keys[pygame.K_c] and event.type == pygame.KEYUP:
             constantShooting *= -1
@@ -134,6 +188,10 @@ while True:
     if event.type == pygame.MOUSEMOTION:
         [player.rect.centerx, player.rect.centery] = event.pos
         mouseCoords = event.pos
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_p:
+            pause=True
+            pausedddd()
 
     # движение врагов
     for enemy in enemies:
@@ -143,9 +201,11 @@ while True:
             distance = (enemy.rect.centerx - player.rect.centerx)**2 + \
                 (enemy.rect.centery - player.rect.centery)**2
             if distance <= 25**2:
-                time.sleep(2)
+                time.sleep(0)
                 print('Game over')
-                os.sys.exit(0)
+                print(player_live)
+                game_over()
+                ##os.sys.exit(0)
     # стрельба врагов
     if enemiesTimerSnaryad == True:
         for enemy in enemies:
