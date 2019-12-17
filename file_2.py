@@ -63,7 +63,7 @@ def bgCadr(i):
     i = str(i)
     while len(i) < 4:
         i = '0' + i
-    return('pygame_bg.jpg')
+    return('bg/Видеофон Звёздное небо ' + i+'.jpg')
 
 global pause
 pause=False
@@ -167,7 +167,7 @@ while True:
         for hit in hits:
             if hit:
                 player_live -= 1
-                if player_live<0:
+                if player_live<-1000:
                     time.sleep(0)
                     print('Game over')
                     print(player_live)
