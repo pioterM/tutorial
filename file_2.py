@@ -65,9 +65,10 @@ def bgCadr(i):
         i = '0' + i
     return('pygame_bg.jpg')
 
-
+global pause
 pause=False
 def pausedddd():
+    global pause
     while pause:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -85,10 +86,9 @@ def pausedddd():
         play_surface.blit(go_surf, go_rect.midtop)
         pygame.display.flip()
         keys = pygame.key.get_pressed()
-        if event.key == pygame.K_p:
+        keys = pygame.key.get_pressed()
+        if  keys[pygame.K_p]:
             pause=False
-
-
         pygame.display.update()
 
 
@@ -188,8 +188,7 @@ while True:
     if event.type == pygame.MOUSEMOTION:
         [player.rect.centerx, player.rect.centery] = event.pos
         mouseCoords = event.pos
-    if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_p:
+    if keys[pygame.K_p]:
             pause=True
             pausedddd()
 
