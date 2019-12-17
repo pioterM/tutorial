@@ -69,12 +69,13 @@ global pause
 pause=False
 def pausedddd():
     global pause
+    keys = pygame.key.get_pressed()
     while pause:
         for event in pygame.event.get():
-             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    pygame.quit()
-                    quit()
+            if event.type == pygame.QUIT:
+                os.sys.exit()
+            if keys[pygame.K_e]:
+                os.sys.exit()
         go_font = pygame.font.SysFont('monaco', 72)
         red = pygame.Color(255, 0, 0)
         go_surf = go_font.render(' Paused', True, red)
@@ -85,7 +86,6 @@ def pausedddd():
         pygame.display.set_caption('Shooter')
         play_surface.blit(go_surf, go_rect.midtop)
         pygame.display.flip()
-        keys = pygame.key.get_pressed()
         keys = pygame.key.get_pressed()
         if  keys[pygame.K_p]:
             pause=False
@@ -155,6 +155,11 @@ while True:
     for hit in hits:
         if hit:
             enemies[enemies.index(hit)] = 0
+    checker=0
+    for enemy in enemies:
+        if enemy==0:
+            print('died')
+            checker=1
 
     # обработка поражения игрока пулями
     for enemy in enemies:
