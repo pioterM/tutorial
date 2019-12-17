@@ -46,9 +46,9 @@ def game_over():
     red = pygame.Color(255, 0, 0)
     go_surf = go_font.render('Game over', True, red)
     go_rect = go_surf.get_rect()
-    go_rect.midtop = (100, 100)
+    go_rect.midtop = (125, 200)
     play_surface = pygame.display.set_mode((
-        450, 400))
+        500, 650))
     pygame.display.set_caption('Shooter')
     play_surface.blit(go_surf, go_rect.midtop)
     pygame.display.flip()
@@ -79,9 +79,9 @@ def pausedddd():
         red = pygame.Color(255, 0, 0)
         go_surf = go_font.render(' Paused', True, red)
         go_rect = go_surf.get_rect()
-        go_rect.midtop = (100, 100)
+        go_rect.midtop = (125, 200)
         play_surface = pygame.display.set_mode((
-            450, 400))
+            500, 650))
         pygame.display.set_caption('Shooter')
         play_surface.blit(go_surf, go_rect.midtop)
         pygame.display.flip()
@@ -158,7 +158,6 @@ while True:
 
     # обработка поражения игрока пулями
     for enemy in enemies:
-
         enemyBullets = enemiesBullets[enemies.index(enemy)]
         enemyBulletsGroup = pygame.sprite.Group(enemyBullets)
         playerBulletsGroup = pygame.sprite.Group(player)
