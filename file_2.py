@@ -71,7 +71,7 @@ def pausedddd():
     global pause
     while pause:
         for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
+             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
                     pygame.quit()
                     quit()
@@ -90,7 +90,6 @@ def pausedddd():
         if  keys[pygame.K_p]:
             pause=False
         pygame.display.update()
-
 
 # функция обновления экрана
 def drawWindow():
@@ -188,7 +187,7 @@ while True:
     if event.type == pygame.MOUSEMOTION:
         [player.rect.centerx, player.rect.centery] = event.pos
         mouseCoords = event.pos
-    if keys[pygame.K_p]:
+    if keys[pygame.K_o]:
             pause=True
             pausedddd()
 
