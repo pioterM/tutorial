@@ -14,10 +14,10 @@ pygame.display.set_caption("Shooter")
 player = Player()
 
 enemies = []
-exampleEnemy = EnemyAircraft()
+exampleEnemy = EnemyAircraft(2)
 enemiesBullets = []
 for e in range(3):
-    enemies.append(EnemyAircraft())
+    enemies.append(EnemyAircraft(1))
     enemiesBullets.append([])
 enemies[1].vel = 2
 
@@ -104,7 +104,6 @@ def drawWindow():
         if type(enemy) == type(exampleEnemy):
             win.blit(enemy.image, enemy.rect)
     win.blit(player.image, player.rect)
-
     pygame.display.update()
 
 
@@ -170,8 +169,11 @@ while True:
             enemyBulletsGroup, playerBulletsGroup, True, True)
         for hit in hits:
             if hit:
+                enemyBullets.pop(enemyBullets.index(hit))
+                    #уничтожение пули
+
                 player_live -= 1
-                if player_live<-1000:
+                if player_live<0:
                     time.sleep(0)
                     print('Game over')
                     print(player_live)
