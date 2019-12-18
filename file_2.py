@@ -4,7 +4,7 @@ import random
 import time
 from settings import SIZE, WHITE, HEIGHT, WIDHT, BGCOLOR
 from game_objects import Player, Bullet, EnemyAircraft
-
+from math import pi,cos,sin
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
 game_over=False
@@ -14,10 +14,10 @@ pygame.display.set_caption("Shooter")
 player = Player()
 
 enemies = []
-exampleEnemy = EnemyAircraft(2)
+exampleEnemy = EnemyAircraft(2,270)
 enemiesBullets = []
 for e in range(3):
-    enemies.append(EnemyAircraft(1))
+    enemies.append(EnemyAircraft(1,3*pi/2,1))
     enemiesBullets.append([])
 enemies[1].vel = 2
 
@@ -125,8 +125,9 @@ while True:
         for enemyBullet in enemyBullets:
             if enemyBullet.rect.centery < HEIGHT and enemyBullet.rect.centery > 0:
                 delta = round(random.random())
-                enemyBullet.rect.centery += 1 + delta*3
-                enemyBullet.rect.bottom += 1 + delta*3
+                enemyBullet.rect.centery += enemyBullet.vel*(-sin(enemy.Bullet.angle*pi/180)) + delta*3
+                ###enemyBullet.rect.bottom += enemyBullet.vel*(-sin(enemy.Bullet.angle*pi/180)) + delta*3
+                enemyBullet.rect.centerx += enemyBullet.vel * (cos(enemy.Bullet.angle * pi / 180)) + delta * 3
             else:
                 # удалил снаряд с индексом, который вылетел за границы
                 enemyBullets.pop(enemyBullets.index(enemyBullet))
@@ -202,7 +203,7 @@ while True:
     # движение врагов
     for enemy in enemies:
         if type(enemy) == type(exampleEnemy):
-            enemy.rect.centery += enemy.vel
+            enemy.rect.centery += enemy.vel*(-sin(enemy.angle*pi/180))
             # обработка столкновения врагов с игроком
             distance = (enemy.rect.centerx - player.rect.centerx)**2 + \
                 (enemy.rect.centery - player.rect.centery)**2
@@ -218,7 +219,7 @@ while True:
             if type(enemy) == type(exampleEnemy):
                 enemyBullets = enemiesBullets[enemies.index(enemy)]
                 enemyBullets.append(
-                    Bullet(pygame.image.load(os.path.join(os.path.dirname(__file__), 'sprites/enemyBullet.png'))))
+                    Bullet(270,2,pygame.image.load(os.path.join(os.path.dirname(__file__), 'sprites/enemyBullet.png'))))
                 enemyBullets[len(enemyBullets) -
                              1].rect.centerx = enemy.rect.centerx
                 enemyBullets[len(enemyBullets) -
