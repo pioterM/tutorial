@@ -57,10 +57,41 @@ def level11(win):
         pygame.quit()
         os.sys.exit()
 
-    # функция получения названия картинки фона по номеру
 
+    # функция получения названия картинки фона по номеру
+    pygame.mixer.music.load('music.mp3')
+    pygame.mixer.music.play()
+
+    sound1 = pygame.mixer.Sound('music.wav')
     while True:
         clock.tick(45)
+        for i in pygame.event.get():
+            if i.type == pygame.QUIT:
+                exit()
+            elif i.type == pygame.KEYUP:
+                if i.key == pygame.K_1:
+                    pygame.mixer.music.pause()
+                    sound1.play()
+                    # pygame.mixer.music.stop()
+                elif i.key == pygame.K_2:
+                    pygame.mixer.music.unpause()
+                    sound1.stop()
+                    # pygame.mixer.music.play()
+                    pygame.mixer.music.set_volume(0.5)
+                elif i.key == pygame.K_3:
+                    pygame.mixer.music.unpause()
+                    # pygame.mixer.music.play()
+                    pygame.mixer.music.set_volume(1)
+            # elif i.type == pygame.MOUSEBUTTONUP:
+            #     if i.button == 1:
+            #         sound1.play()
+            #     elif i.button==2:
+            #         sound1.stop()
+        pygame.time.delay(20)
+        #pygame.mixer.music.load('Test.mp3')
+        #pygame.mixer.music.play()
+
+
         # UPDATE  - -- -- - -- движение врагов
         for enemy in enemies:
             if type(enemy) == type(exampleEnemy):
